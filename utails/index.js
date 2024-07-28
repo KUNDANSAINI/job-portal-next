@@ -1,3 +1,4 @@
+import queryString from "query-string"
 
 
 
@@ -108,7 +109,7 @@ export const candidateForm=[
     },
     {
         label:"LinkedIn Profile",
-        name:"linkedInProfile",
+        name:"linkedinProfile",
         placeholder:"LinkedIn Profile",
         componentType:"input"
     },
@@ -134,7 +135,23 @@ export const initialCandidateState={
     college:"",
     collegeLocation:"",
     graduatedYear:"",
-    linkedInProfile:"",
+    linkedinProfile:"",
+    githubProfile:"",
+}
+export const initialCandidateAccountState={
+    name:"",
+    currentCompany:"",
+    currentJobLocation:"",
+    preferedJobLocation:"",
+    currentSalary:"",
+    noticePeriod:"",
+    skills:"",
+    previousCompanies:"",
+    totalExperience:"",
+    college:"",
+    collegeLocation:"",
+    graduatedYear:"",
+    linkedinProfile:"",
     githubProfile:"",
 }
 
@@ -194,3 +211,64 @@ export const initialPostNewJobState={
     descripation:"",
     skills:"",
 }
+
+export const filterMenuData=[
+    {
+        id:"companyName",
+        label:"Company Name"
+    },
+    {
+        id:"title",
+        label:"Title"
+    },
+    {
+        id:"type",
+        label:"Type"
+    },
+    {
+        id:"location",
+        label:"Location"
+    },
+]
+
+// Query String Adding
+
+export function formUrlQuery(params){
+    const {param,dataToAdd}=params
+    let currentURL= queryString.parse(param)
+    if(Object.keys(dataToAdd).length > 0){
+        Object.keys(dataToAdd).map((key)=>{
+            if(dataToAdd[key].length === 0) delete currentURL[key]
+            else currentURL[key] = dataToAdd[key].join(',')
+        })
+    }
+    return queryString.stringifyUrl(
+        {
+            url:window.location.pathname,
+            query: currentURL
+        },{
+            skipNull :true
+        }
+    )
+}
+
+
+// Membership Plans 
+
+export const memberShipPlans=[
+    {
+        heading: 'Tier 1',
+        price: 100,
+        type: "basic"
+    },
+    {
+        heading: 'Tier 2',
+        price: 1000,
+        type: "teams"
+    },
+    {
+        heading: 'Tier 3',
+        price: 5000,
+        type: "enterprise"
+    },
+]

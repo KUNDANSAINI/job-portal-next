@@ -54,7 +54,7 @@ function Header({ user, profile }) {
                                 <Link href={'/'} className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">Home</Link>
                                 <Link href={'/jobs'} className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">Jobs</Link>
                                 {
-                                    profile?.role === 'candidate' ?
+                                    profile?.data?.role === 'candidate' ?
                                         <Link href={'/activity'} className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-2 text-sm font-medium">Activity</Link>
                                         : null
                                 }

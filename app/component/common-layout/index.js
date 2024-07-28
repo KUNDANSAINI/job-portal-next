@@ -7,6 +7,7 @@ async function CommonLayout({ children }) {
     const user=await currentUser()
 
     const profile=await fetchProfileInfo(user?.id)
+   
 
     return (
         <div className="mx-auto max-w-7xl p-6 lg:px-8">

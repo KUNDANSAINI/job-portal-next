@@ -2,7 +2,10 @@ import { SignUp } from "@clerk/nextjs";
 
 function SignUpPage() {
     return ( 
-        <SignUp/>
+        <div className="flex items-center justify-center h-[80vh] w-full">
+            <SignUp/>
+        </div>
+        
      );
 }
 

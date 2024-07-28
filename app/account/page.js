@@ -1,9 +1,9 @@
 import { currentUser } from "@clerk/nextjs/server";
-import MemberShipPage from "../component/member-ship";
+import AccountInfo from "../component/account-info";
 import { fetchProfileInfo } from "@/action";
 import { redirect } from "next/navigation";
 
-async function MemberShip() {
+async function AccountPage() {
 
     const user=await currentUser()
 
@@ -12,13 +12,14 @@ async function MemberShip() {
     }
 
     const profileInfo=await fetchProfileInfo(user?.id)
-    if(!profileInfo?.data){
+
+    if(!profileInfo){
         redirect('/onboard')
     }
 
-    return (  
-        <MemberShipPage profileInfo={profileInfo} />
-    );
+    return ( 
+        <AccountInfo profileInfo={profileInfo} />
+     );
 }
 
-export default MemberShip;
+export default AccountPage;

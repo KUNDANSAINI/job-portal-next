@@ -1,11 +1,69 @@
+'use client'
+
+import { filterMenuData, formUrlQuery } from "@/utails";
+import CandidateJobCard from "../candidate-job-card";
 import PostNewJobs from "../post-new-job";
 import RecruiterJobCard from "../recruiter-job-card";
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 
 function Jobs(params) {
-    const {user,profileInfo,joblisting}=params
-    //console.log(joblisting)
+    const {user,profileInfo,joblisting, fetchAllApplication,filterCatigory}=params
+
+    const [filterParams,setFilterParams]=useState({})
+    const searchParams=useSearchParams()
+    const router=useRouter()
+
+    const filterData = filterMenuData.map((item)=> ({
+        id:item.id,
+        name:item.label,
+        option: [
+            ...new Set(filterCatigory.data.map((listItem)=> listItem[item.id]))
+        ]
+    }))
+
+   async function handlefilter(getID,getOption){
+    let cpyFilterParams={...filterParams}
+    const indexOfCurrentSection = Object.keys(cpyFilterParams).indexOf(getID)
+    if(indexOfCurrentSection === -1){
+        cpyFilterParams={
+            ...cpyFilterParams,
+            [getID] : [getOption]
+        }
+    }
+    else{
+        const indexOfCurrentOption=
+        cpyFilterParams[getID].indexOf(getOption)
+        if(indexOfCurrentOption === -1){
+            cpyFilterParams[getID].push(getOption)
+        }else{
+            cpyFilterParams[getID].splice(indexOfCurrentOption,1)
+        }
+    }
+    setFilterParams(cpyFilterParams)
+    sessionStorage.setItem("filterParams",JSON.stringify(cpyFilterParams))
+}
+
+useEffect(()=>{
+    setFilterParams(JSON.parse(sessionStorage.getItem("filterParams")))
+},[])
+
+    useEffect(()=>{
+        if(filterParams && Object.keys(filterParams).length > 0){
+            let url="";
+            url= formUrlQuery({
+                param:searchParams.toString(),
+                dataToAdd: filterParams
+            })
+            router.push(url,{scroll:false})
+        }
+    },[filterParams,searchParams])
+    //console.log(filterParams)
+
     return ( 
         <div>
             <div className="mx-auto max-w-7xl">
@@ -19,8 +77,33 @@ function Jobs(params) {
                     </h1>
                     <div className="flex items-center">
                         {
-                            profileInfo?.role===  'candidate' ? <p>Filter</p>
-                            : <PostNewJobs user={user} profileInfo={profileInfo}/>
+                            profileInfo?.role===  'candidate' ? (
+                            <Menubar>
+                                {
+                                    filterData.map((filterMenu)=>(
+                                    <MenubarMenu>
+                                        <MenubarTrigger>{filterMenu.name}</MenubarTrigger>
+                                        <MenubarContent>
+                                        {
+                                            filterMenu.option.map((option,index)=>(
+                                                <MenubarItem key={index} className="flex items-center" onClick={()=>handlefilter(filterMenu.id,option)} >
+                                                    <div className={`h-4 w-4 border rounded border-gray-900 
+                                                        ${filterParams && Object.keys(filterParams).length > 0 &&
+                                                            filterParams[filterMenu.id] && filterParams[filterMenu.id].indexOf(option) > -1 ?
+                                                            "bg-black" : ""
+                                                         }`} />
+                                                    <Label className="ml-3 text-sm cursor-pointer text-gray-600">
+                                                        {option}
+                                                    </Label>
+                                                </MenubarItem>
+                                            ))
+                                        }
+                                        </MenubarContent>
+                                    </MenubarMenu>
+                                    ))
+                                }
+                            </Menubar>
+                            ) : (<PostNewJobs user={user} profileInfo={profileInfo}/>)
                         }
                     </div>
                 </div>
@@ -33,9 +116,9 @@ function Jobs(params) {
                                         joblisting && joblisting.length > 0 ?
                                         joblisting.map((jobs,index)=>(
                                             profileInfo?.role === "candidate" ? (
-                                                <p>Candidate</p>
+                                                <CandidateJobCard fetchAllApplication={fetchAllApplication} profileInfo={profileInfo} jobs={jobs} key={index} />
                                             ) : (
-                                                <RecruiterJobCard jobs={jobs} key={index}/>
+                                                <RecruiterJobCard fetchAllApplication={fetchAllApplication} profileInfo={profileInfo} jobs={jobs} key={index}/>
                                             )
 
                                         )) : null

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { initialPostNewJobState, postNewJobForm } from "@/utails";
 import { useState } from "react";
 
-function PostNewJobs({ user, profileInfo}) {
+function PostNewJobs({ user, profileInfo }) {
 
     const [showJobDialog, setShowJobDialog] = useState(false)
     const [jobFormData, setJobFormData] = useState({
@@ -16,12 +16,17 @@ function PostNewJobs({ user, profileInfo}) {
         companyName: profileInfo?.recruiterInfo?.companyName
     })
 
-    async function createNewJob(){
+    async function createNewJob() {
         await createJob({
             ...jobFormData,
-            recruiterId:user?.id,
-            applicants:[]
-        },'/jobs')
+            recruiterId: user?.id,
+            applicants: []
+        }, '/jobs')
+        setShowJobDialog(false)
+        setJobFormData({
+            ...initialPostNewJobState,
+            companyName: profileInfo?.recruiterInfo?.companyName
+    })
     }
 
 

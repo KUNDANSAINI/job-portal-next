@@ -1,6 +1,6 @@
 'use client'
 
-import { createRecruiterProfile } from "@/action";
+import { createCandidateProfile, createRecruiterProfile } from "@/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,6 @@ function OnBoard() {
 
     const currentAuthUser = useUser()
     const {user}=currentAuthUser
-    //console.log(currentAuthUser)
 
     function handleTabChange(value){
         setCurrentTab(value)
@@ -35,11 +34,16 @@ function OnBoard() {
         await createRecruiterProfile(data,'/onboard')
     }
 
-    function handlecandidateform(){
-        //
+    async function handlecandidateform(){
+        const data={
+            candidateInfo:candidateformData,
+            userId:user.id,
+            role:'candidate',
+            isPremiumUser:false,
+            email:user.primaryEmailAddress.emailAddress
+        }
+        await createCandidateProfile(data,'/onboard')
     }
-
-    //console.log(candidateformData)
 
     return ( 
         <div className="bg-white">
@@ -84,8 +88,8 @@ function OnBoard() {
                 <TabsContent value="recruiter">
                     <form action={handlerecruiterform}>
                         {
-                            recruiterForm.map((form)=>(
-                                <div className="relative flex items-center mt-8">
+                            recruiterForm.map((form,index)=>(
+                                <div className="relative flex items-center mt-8" key={index}>
                                 <Input 
                                 name={form.name}
                                 placeholder={form.placeholder}
