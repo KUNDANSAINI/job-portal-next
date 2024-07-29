@@ -1,5 +1,3 @@
-'use client'
-
 import { fetchProfileInfo } from "@/action";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
