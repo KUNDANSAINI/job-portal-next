@@ -2,6 +2,7 @@ import { fetchProfileInfo } from "@/action";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import HomePageButtonControl from "./component/homepage-button-control";
+import Image from "next/image";
 
 async function Home() {
 
@@ -31,9 +32,12 @@ async function Home() {
                       <HomePageButtonControl user={JSON.parse(JSON.stringify(user))} profileInfo={profileInfo} />
                   </div>
                   <div className="hidden relative md:block lg:w-7/12">
-                    <img
-                      src="https://shorturl.at/msw07"
+                    <Image
+                      src="/images/recruitment.avif"
                       alt="Job Portal"
+                      width={700}
+                      height={700}
+                      loading="lazy"
                       className=" relative ml-auto"
                     />
                   </div>
