@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 
 
 function AccountInfo({ profileInfo }) {
-    console.log(profileInfo)
 
     const [candidateFormData, setCandidateFormData] = useState(initialCandidateAccountState)
     const [recriuterFormData, setRecriuterFormData] = useState(initialRecruiterState)
@@ -23,8 +22,6 @@ function AccountInfo({ profileInfo }) {
         }
         
     }, [])
-
-    console.log(recriuterFormData);
 
     async function handleCandidateUpdate() {
         const data = {
