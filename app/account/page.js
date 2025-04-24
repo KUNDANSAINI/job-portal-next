@@ -3,6 +3,12 @@ import AccountInfo from "../component/account-info";
 import { fetchProfileInfo } from "@/action";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+    title: "Your Account | Job Portal App",
+    description: "Manage your profile, applications, and saved jobs on your Job Portal account.",
+  };
+  
+
 async function AccountPage() {
 
     const user=await currentUser()

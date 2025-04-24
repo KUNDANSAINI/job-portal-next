@@ -4,6 +4,12 @@ import { redirect } from "next/navigation";
 import HomePageButtonControl from "./component/homepage-button-control";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Find Your Dream Job | Job Portal App",
+  description: "Explore thousands of job opportunities, connect with top companies, and take the next step in your career with Job Portal App.",
+};
+
+
 async function Home() {
 
   const user = await currentUser()
